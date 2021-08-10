@@ -12,7 +12,7 @@ terraform {
   }
   backend "azurerm" {
     resource_group_name  = "rg-methods-terraform"
-    storage_account_name = "methodsterraform"
+    storage_account_name = "methodsmpnterraform"
     container_name       = "methods-terraform-state"
     key                  = "azure-methods/infrastructure.tfstate"
     subscription_id      = "eef2d7b1-c33f-48ec-a949-5b87caad5c13"
@@ -33,28 +33,20 @@ resource "azurerm_resource_group" "rg-methods-terraform" {
   location = "East US"
 }
 
-resource "azurerm_storage_account" "storageaccount" {
-  name                     = "methodsterraform"
-  resource_group_name      = azurerm_resource_group.rg-.name
-  location                 = azurerm_resource_group.example.location
+resource "azurerm_storage_account" "methods-storage-account" {
+  name                     = "methodsmpnterraform"
+  resource_group_name      = azurerm_resource_group.rg-methods-terraform.name
+  location                 = azurerm_resource_group.rg-methods-terraform.location
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = "LRS"
 
   tags = {
-    environment = "staging"
+    environment = "env:prod"
   }
 }
 
-#module "msdn" {
-#  source         = "./modules/msdn/"
-#  vpn_passphrase = var.vpn_passphrase
-#}
-
-#resource "azurerm_management_group" "msdn_management_group" {
-#  display_name = "MSDN Management Group"
-#  name         = "mg-msdn"
-#
-#  subscription_ids = [
-#    module.msdn.subscription_id
-# ]
-#}
+resource "azurerm_storage_container" "methods-storage-container" {
+  name                  = "methods-terraform-state"
+  storage_account_name  = azurerm_storage_account.methods-storage-account.name
+  container_access_type = "private"
+}
