@@ -73,3 +73,26 @@ resource "azurerm_virtual_network_gateway" "methods-vnet-gateway" {
     subnet_id                     = azurerm_subnet.methods-gateway-subnet.id
   }
 }
+
+resource "azurerm_virtual_network_gateway_connection" "connection_tierpoint" {
+  name                = "cn-shared-methods-tierpoint"
+  location            = azurerm_resource_group.rg-methods-shared.location
+  resource_group_name = azurerm_resource_group.rg-methods-shared.name
+
+  type                       = "IPsec"
+  virtual_network_gateway_id = azurerm_virtual_network_gateway.vnet_shared_gateway.id
+  local_network_gateway_id   = azurerm_local_network_gateway.cetech_ne.id
+
+  shared_key = var.vpn_passphrase
+}
+
+resource "azurerm_virtual_network_gateway_connection" "connection_flemington" {
+  name                = "cn-shared-methods-flemington"
+  location            = azurerm_resource_group.rg-methods-shared.location
+  resource_group_name = azurerm_resource_group.rg-methods-shared.name
+
+  type                       = "IPsec"
+  virtual_network_gateway_id = azurerm_virtual_network_gateway.vnet_shared_gateway.id
+  local_network_gateway_id   = azurerm_local_network_gateway.cetech_nj.id
+  shared_key                 = var.vpn_passphrase
+}        
