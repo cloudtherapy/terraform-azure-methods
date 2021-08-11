@@ -32,7 +32,9 @@ resource "azurerm_virtual_network" "methods-vnet-shared" {
   }
 
   tags = {
-    environment = "env:prod"
+    "cloudmethods:contact" = "cmoreira"
+    "env:platform"         = "azure-methods"
+    "env:provisioner"      = "Terraform"
   }
 }
 
