@@ -3,9 +3,9 @@ resource "azurerm_resource_group" "rg-methods-shared" {
   location = "East US"
 
   tags = {
-    "cloudmethods:contact"  = "cmoreira"
-    "env:platform"    = "azure-methods"
-    "env:provisioner" = "Terraform"
+    "cloudmethods:contact" = "cmoreira"
+    "env:platform"         = "azure-methods"
+    "env:provisioner"      = "Terraform"
   }
 }
 
