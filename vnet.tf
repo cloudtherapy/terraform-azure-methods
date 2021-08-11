@@ -36,15 +36,6 @@ data "azurerm_subnet" "methods-gateway-subnet" {
   resource_group_name  = azurerm_resource_group.rg-methods-shared.name
 }
 
-##
-## resource "azurerm_subnet" "methods-gateway-subnet" {
-##   name                 = "GatewaySubnet"
-##   resource_group_name  = azurerm_resource_group.rg-methods-shared.name
-##   virtual_network_name = azurerm_virtual_network.methods-vnet-shared.name
-##   address_prefixes     = ["10.157.2.0/26"]
-## }
-##
-
 resource "azurerm_local_network_gateway" "methods-tierpoint" {
   name                = "lgw-methods-tierpoint"
   location            = azurerm_resource_group.rg-methods-shared.location
