@@ -13,7 +13,7 @@ resource "azurerm_virtual_network_gateway" "methods-vnet-gateway" {
   ip_configuration {
     public_ip_address_id          = azurerm_public_ip.methods-public-ip.id
     private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.methods-gateway-subnet.id
+    subnet_id                     = data.azurerm_subnet.methods-gateway-subnet.id
   }
 }
 

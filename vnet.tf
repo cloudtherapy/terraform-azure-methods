@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "methods-vnet-shared" {
   location            = azurerm_resource_group.rg-methods-shared.location
   resource_group_name = azurerm_resource_group.rg-methods-shared.name
   address_space       = ["10.157.0.0/20"]
-  #dns_servers         = ["10.227.90.10", "10.227.90.20"]
+  # dns_servers         = ["10.227.90.10", "10.227.90.20"]
 
   subnet {
     name           = "snet-methods-shared-private"
@@ -20,17 +20,30 @@ resource "azurerm_virtual_network" "methods-vnet-shared" {
     address_prefix = "10.157.1.0/24"
   }
 
+  subnet {
+    name           = "GatewaySubnet"
+    address_prefix = "10.157.2.0/26"
+  }
+
   tags = {
     environment = "env:prod"
   }
 }
 
-resource "azurerm_subnet" "methods-gateway-subnet" {
+data "azurerm_subnet" "methods-gateway-subnet" {
   name                 = "GatewaySubnet"
-  resource_group_name  = azurerm_resource_group.rg-methods-shared.name
   virtual_network_name = azurerm_virtual_network.methods-vnet-shared.name
-  address_prefixes     = ["10.157.2.0/26"]
+  resource_group_name  = azurerm_resource_group.rg-methods-shared.name
 }
+
+##
+## resource "azurerm_subnet" "methods-gateway-subnet" {
+##   name                 = "GatewaySubnet"
+##   resource_group_name  = azurerm_resource_group.rg-methods-shared.name
+##   virtual_network_name = azurerm_virtual_network.methods-vnet-shared.name
+##   address_prefixes     = ["10.157.2.0/26"]
+## }
+##
 
 resource "azurerm_local_network_gateway" "methods-tierpoint" {
   name                = "lgw-methods-tierpoint"
