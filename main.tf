@@ -31,6 +31,12 @@ provider "azuread" {
 resource "azurerm_resource_group" "rg-methods-terraform" {
   name     = "rg-methods-terraform"
   location = "East US"
+  
+  tags = {
+    "cloudmethods:contact"  = "cmoreira"
+    "env:platform"    = "azure-methods"
+    "env:provisioner" = "Terraform"
+  }
 }
 
 resource "azurerm_storage_account" "methods-storage-account" {
