@@ -23,11 +23,13 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = "eef2d7b1-c33f-48ec-a949-5b87caad5c13"
+  #subscription_id = "eef2d7b1-c33f-48ec-a949-5b87caad5c13"
+  subscription_id = var.subscription_id
 }
 
 provider "azuread" {
-  tenant_id = "a0728e0e-8468-4c6a-bb7b-9f21a8d2cbbd"
+  #tenant_id = "a0728e0e-8468-4c6a-bb7b-9f21a8d2cbbd"
+  tenant_id = var.tenant_id
 }
 
 # This sets a datasource that uses the locally logged in user via Azure CLI as the principal for this terraform execution
@@ -49,10 +51,15 @@ data "azuread_service_principal" "azure_service_management" {
   application_id = data.azuread_application_published_app_ids.well_known.result.AzureServiceManagement
 }
 
+
+# Datasource for azurerm module to read in the subscription components in Cloudmethods. This is required to capturethe changes made in the subscription IAM directory. 
+data "azurerm_subscription" "current" {
+}
+
 # This code block will spit out the output of the Azure Service Management object ID it has found in the azuread_application_published_app_ids results to the console
-#output "published_app_ids" {
-#  value = data.azuread_application_published_app_ids.well_known.result["AzureServiceManagement"]
-#}
+output "published_app_ids" {
+  value = data.azuread_application_published_app_ids.well_known.result#["AzureServiceManagement"]
+}
 
 #This code block will spit out the output of the AuditLog.Read.All API permission ID that is scoped to the Microsoft Graph application ID it has found in the 
 #azuread_application_published_app_ids results to the console. This essentially will read in the possible API permissions to toggle and give you the object ID of the
@@ -73,8 +80,8 @@ data "azuread_service_principal" "azure_service_management" {
 #  value = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
 #}
 
-resource "azuread_application" "tf-nops" {
-  display_name     = "tf-nops"
+resource "azuread_application" "azure-nops-integration" {
+  display_name     = "azure-nops-integration"
   sign_in_audience = "AzureADMyOrg"
   web {
     redirect_uris = [
@@ -86,7 +93,8 @@ resource "azuread_application" "tf-nops" {
       id_token_issuance_enabled     = false
     }
   }
-  # This references the Azure Service Management published app and reads the user_impersonation API object ID from the datasoure built above to give permission
+
+  # This references the Azure Service Management published app and reads the user_impersonation API object ID from the datasource built above to give permission
   # to this azuread application being create at the scope level
   required_resource_access {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result["AzureServiceManagement"]
@@ -123,13 +131,25 @@ resource "azuread_application" "tf-nops" {
 }
 
 # Create a client secret for application id
-resource "azuread_application_password" "tf-nops" {
+resource "azuread_application_password" "azure-nops-integration-secret" {
   end_date              = "2299-12-30T23:00:00Z" # Forever
-  application_object_id = azuread_application.tf-nops.object_id
-  display_name          = "tf-nops-secret"
+  application_object_id = azuread_application.azure-nops-integration.object_id
+  display_name          = "azure-nops-integration-secret"
 }
 
 output "published_tf_nops_secret" {
-  value = nonsensitive(azuread_application_password.tf-nops.value)
+  value = nonsensitive(azuread_application_password.azure-nops-integration-secret.value)
 }
 
+# Create an Azure AD serivce principal that is related to the application registration being created so that it can be assigned to an IAM role in the subscription
+resource "azuread_service_principal" "azure-nops-integration" {
+  application_id               = azuread_application.azure-nops-integration.application_id
+  app_role_assignment_required = false
+}
+
+# Assign the subscription Contributor IAM role to the nOps application registration 
+resource "azurerm_role_assignment" "azure-nops-integration-contributor" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Contributor"
+  principal_id         = azuread_service_principal.azure-nops-integration.object_id
+}
