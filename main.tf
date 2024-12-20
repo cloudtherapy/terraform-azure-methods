@@ -23,6 +23,6 @@ resource "azurerm_storage_account" "methods-storage-account" {
 
 resource "azurerm_storage_container" "methods-storage-container" {
   name                  = "methods-terraform-state"
-  storage_account_name  = azurerm_storage_account.methods-storage-account.name
+  storage_account_id  = azurerm_storage_account.methods-storage-account.id
   container_access_type = "private"
 }
