@@ -26,3 +26,11 @@ resource "azurerm_storage_container" "methods-storage-container" {
   storage_account_id  = azurerm_storage_account.methods-storage-account.id
   container_access_type = "private"
 }
+
+# ansible public key
+resource "azurerm_ssh_public_key" "ansible" {
+  name                = "ansible"
+  resource_group_name = azurerm_resource_group.rg-methods-terraform.name
+  location = "East US"
+  public_key          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTD8HrwW7d5xvgs0o0dXkyNFdgZwab4G9Ok2Irh7uuk0OOW/U9QyePpfHzDboSsyfSGjwG3qzn6zKncq1vg2YmaR2oOm555T5D3/faGdJ1UJbx5hqiogkfw4hXMreg/u9Ah9CuucDUKwRxQC/MhpVrGb1MAEuDd5ZKPT6QF99ssgno/ibrHdraENMsZu+FxmJZ/Ukmi6ik8eJYRlSvAEZXw2hQIEcEaYejWMnNmE06ys5xjQe30pmV2a/Wxg4NN2MrDFzCssSDARAMak5v0vGkLGTsJYx56NaKLqnOudkKnPkXK/AvvEB26L1F1kaZLyR0jrzjTuKKEuqUJReKf/MV"
+}
