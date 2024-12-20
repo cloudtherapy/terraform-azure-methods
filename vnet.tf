@@ -52,22 +52,6 @@ resource "azurerm_local_network_gateway" "methods-tierpoint" {
   address_space       = ["10.227.0.0/16"]
 }
 
-#resource "azurerm_local_network_gateway" "methods-flemington" {
-#  name                = "lgw-methods-flemington"
-#  location            = azurerm_resource_group.rg-methods-shared.location
-#  resource_group_name = azurerm_resource_group.rg-methods-shared.name
-#  gateway_address     = "23.31.233.13"
-#  address_space       = ["10.30.0.0/16"]
-#}
-
-resource "azurerm_local_network_gateway" "methods-norwood" {
-  name                = "lgw-methods-norwood"
-  location            = azurerm_resource_group.rg-methods-shared.location
-  resource_group_name = azurerm_resource_group.rg-methods-shared.name
-  gateway_address     = "74.104.176.116"
-  address_space       = ["10.220.0.0/16"]
-}
-
 resource "azurerm_public_ip" "methods-public-ip" {
   name                = "pip-methods-public"
   location            = azurerm_resource_group.rg-methods-shared.location
