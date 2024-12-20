@@ -18,17 +18,17 @@ resource "azurerm_virtual_network" "methods-vnet-shared" {
 
   subnet {
     name           = "snet-methods-shared-private"
-    address_prefix = "10.157.0.0/24"
+    address_prefixes = ["10.157.0.0/24"]
   }
 
   subnet {
     name           = "snet-methods-shared-public"
-    address_prefix = "10.157.1.0/24"
+    address_prefixes = ["10.157.1.0/24"]
   }
 
   subnet {
     name           = "GatewaySubnet"
-    address_prefix = "10.157.2.0/26"
+    address_prefixes = ["10.157.2.0/26"]
   }
 
   tags = {
