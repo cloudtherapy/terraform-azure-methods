@@ -4,14 +4,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.14.0"
     }
-    backend "remote" {
-      hostname = "app.terraform.io"
-      organization = "cloudtherapy"
-
-      workspaces {
-        name = "terraform-azure-methods"
-      }
-    }
   }
 }
 
