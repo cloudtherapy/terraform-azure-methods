@@ -4,17 +4,18 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.14.0"
     }
-  }
-  backend "azurerm" {
-    resource_group_name  = "rg-methods-terraform"
-    storage_account_name = "methodsmpnterraform"
-    container_name       = "methods-terraform-state"
-    key                  = "azure-methods/infrastructure.tfstate"
-    subscription_id      = "eef2d7b1-c33f-48ec-a949-5b87caad5c13"
+    azuread = {
+      source = "hashicorp/azuread"
+      version = "3.0.2"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
-  subscription_id = "eef2d7b1-c33f-48ec-a949-5b87caad5c13"
+  client_id       = var.methods_client_id
+  client_secret   = var.methods_client_secret
+  tenant_id       = var.methods_tenant_id
+  subscription_id = var.methods_subscription_id
+
 }
