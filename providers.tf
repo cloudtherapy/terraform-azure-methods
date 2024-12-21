@@ -5,13 +5,13 @@ terraform {
       version = "4.14.0"
     }
     backend "remote" {
-    hostname = "app.terraform.io"
-    organization = "cloudtherapy"
+      hostname = "app.terraform.io"
+      organization = "cloudtherapy"
 
-    workspaces {
-      name = "terraform-azure-methods"
+      workspaces {
+        name = "terraform-azure-methods"
+      }
     }
-  }
   }
 }
 
