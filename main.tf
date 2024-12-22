@@ -21,7 +21,7 @@ resource "azurerm_network_security_group" "methods_nsg" {
 
 # Virtual Network
 resource "azurerm_virtual_network" "methods_network" {
-  name                = "vnet-shared-10-65-0"
+  name                = "vnet-shared-10-157-0"
   address_space       = ["10.157.0.0/20"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -29,7 +29,7 @@ resource "azurerm_virtual_network" "methods_network" {
 
 # Subnet 1
 resource "azurerm_subnet" "methods_subnet_1" {
-  name                 = "snet-shared-10-60-0-0"
+  name                 = "snet-shared-10-157-0-0"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.methods_network.name
   address_prefixes     = ["10.157.0.0/24"]
@@ -43,7 +43,7 @@ resource "azurerm_subnet_network_security_group_association" "methods_nsg_subnet
 
 # Subnet 2
 resource "azurerm_subnet" "methods_subnet_2" {
-  name                 = "snet-shared-10-60-1-0"
+  name                 = "snet-shared-10-157-1-0"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.methods_network.name
   address_prefixes     = ["10.157.1.0/24"]
