@@ -13,5 +13,4 @@ provider "azurerm" {
   client_secret   = var.methods_client_secret
   tenant_id       = var.methods_tenant_id
   subscription_id = var.methods_subscription_id
-
 }
