@@ -17,3 +17,11 @@ output "subnet_name_2" {
   description = "The name of the created subnet 2."
   value       = azurerm_subnet.methods_subnet_2.name
 }
+
+output "container_registry_name" {
+  value = azurerm_container_registry.acr.name
+}
+
+output "container_registry_login_server" {
+  value = azurerm_container_registry.acr.login_server
+}
