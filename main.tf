@@ -4,6 +4,14 @@ resource "azurerm_resource_group" "rg" {
   name     = "rg-shared-services"
 }
 
+# Create Azure Container Registry
+resource "azurerm_container_registry" "acr" {
+  name                = "methods"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  sku                 = "Basic"
+}
+
 # ansible public key
 resource "azurerm_ssh_public_key" "ansible" {
   name                = "ansible"
